@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load Cart %}
+
+{% if request.session.cart %}
+<form action="/placeorder/" method="POST">
+	{% csrf_token %}
+	<table class="table table-border">
+		<thead class = "table-dark">
+			<tr>
+				<th scope="col">Product Name</th> 
+				<th scope="col">Quantity</th>
+				<th scope="col">Product Price</th>
+				<th scope="col">Total Price</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for product in products %}
+			<tr>
+				<td>{{product.name}}</td>
+				<td>{{ product|times_quantity:request.session.cart }}</td>
+				<td>{{product.price}}</td>
+				<td>{{ product|Total:request.session.cart }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+
+		<tfoot class="table-dark">
+			<tr>
+				<td colspan="2"></td>
+				<td scope="col">Total</td>
+				<td>{{ products|total_price:request.session.cart }}</td>
+			</tr>
+			<tr class="table-light">
+				<td colspan="2"></td>
+				<td scope="col">
+					<input type="submit" value="PlaceOrder" class="btn btn-primary">
+				</form>
+			</td>
+		</tr>
+	</tfoot>
+</table>
+</form>
+{% else %}
+<form action="/" method="GET">
+	<div class = "container">
+		<div class = "row ">
+			<div class="card mx-auto mb-3 p-3" style="width: 18rem;">
+				<img src=" " class="card-img-top img-circle" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">Your cart is empty!<br>Add items to it now.</h5>
+					<p class="card-text"><button type="submit" class="btn btn-primary border">Shop Now</button></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+{% endif %}
+{% endblock %}

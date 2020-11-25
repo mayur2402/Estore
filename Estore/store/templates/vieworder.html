@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load Cart%}
+{% if request.session.name == request.session.uname %}
+<form action="/placeorder/" method="POST">
+	{% csrf_token %}
+	<table class="table table-border">
+		<thead class = "table-dark">
+			<tr>
+				<th scope="col">Product Name</th> 
+				<th scope="col">Quantity</th>
+				<th scope="col">Product Price</th>
+				<th scope="col">Date</th>
+				<th scope="col">Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in data %}
+			{% if request.session.name == request.session.uname %}
+			<tr>
+				<td>{{order.pname}}</td>
+				<td>{{order.quantity}}</td>
+				<td>{{order.price}}</td>
+				<td>{{order.date}}</td>
+				<td>{% if order.status %}
+					Complete
+					{% else %}
+					Pending
+					{% endif %}
+				</td>
+			</tr>
+			{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+</form>
+{% else %}
+<form action="/" method="GET">
+	<div class = "container">
+		<div class = "row ">
+			<div class="card mx-auto mb-3 p-3" style="width: 18rem;">
+				<img src=" " class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title"></h5>
+					<p class="card-text"><button type="submit" class="btn btn-primary border">Shop Now</button></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+{% endif %}
+
+{% endblock %}

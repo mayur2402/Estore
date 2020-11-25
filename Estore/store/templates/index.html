@@ -1,0 +1,63 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+{% load Cart %}
+<div class = "row">
+  <div class = "col-lg-2 pl-3">
+    <div class="list-group">
+      {%for cat in Category%}
+      <a href = "/?cat={{cat.id}}" class="list-group-item list-group-item-action">
+        {{cat.name}}
+      </a>
+      {%endfor%}
+    </div>
+  </div>
+  <div class = "col-lg-10">
+    <div class = "container">
+      <div class = "row ">
+        {% for product in Product %}
+        <div class="card mx-auto mb-3 p-3" id="{{product.id}}" style="width: 18rem;">
+         <img src="{{product.image.url}}" class="card-img-top" alt="...">
+         <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">{{product.price}}</p>
+          <form action="/" method="POST">
+            {% csrf_token %}
+            <input hidden type = "text" name = "pid" value = "{{product.id}}">
+          </form>
+        </div>
+
+        <div class="card-footer no-gutters mt-1 pb-0">
+
+          {% if product|is_in_cart:request.session.cart %}
+          <div class="row">
+            <form method="POST" action="/#{{product.id}}">
+              {% csrf_token%}
+              <input hidden type = "text" name = "pid" value = "{{product.id}}">
+              <input hidden type = "text" name = "remove" value = "True">
+              <input type="submit" class=" btn btn-block btn-danger" value=" - ">
+            </form>
+            <div class="text-center col mt-1">{{ product|times_quantity:request.session.cart }} in cart
+            </div>
+            <form method="POST" action="/#{{product.id}}" >
+              {% csrf_token%}
+              <input hidden type = "text" name = "pid" value = "{{product.id}}">
+              <input type="submit" value=" + " class="btn btn-block btn-success">
+            </form>
+          </div>
+
+          {% else %}
+          <form action="/#{{product.id}}" method="POST" class="btn-block">
+            {% csrf_token %}
+            <input hidden type = "text" name = "pid" value = "{{product.id}}">
+            <input type="submit" class="btn btn-block border btn-success" name="addtocart" value="Add To cart">
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{%endblock%}

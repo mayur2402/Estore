@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class = "container-fluid">
+	<div class = 'p-4 m-4'>
+		<div class = 'col-lg-5 border rounded pt-3 mx-auto'>
+			<form action="/login/" method="POST">
+				{% csrf_token %}
+				<div class = "alert bg-danger">
+				<h4>{{key}}</h4>
+				</div>
+				<div class="form-group">
+					<label for=" ">Email</label><br>
+					<input type="email" name="email" placeholder="John@gmail.com" required >
+				</div>
+				<div class="form-group">
+					<label for="">Password</label><br>
+					<input type="password" name="password" placeholder="*******" required>
+				</div>
+				<input hidden type="text" name="name" value=" ">
+				<button type="submit" class="btn btn-primary border">login</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

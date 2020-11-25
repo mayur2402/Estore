@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+
+{% block content %}
+
+<div class = "container-fluid">
+	<div class = 'p-4 m-4'>
+		<div class = 'col-lg-5 border rounded pt-3 mx-auto'>
+			<form action="/confirm/" method="POST">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for=" ">Enter Otp</label><br>
+					<input type="text" name="otp" required minlength="5" maxlength="5">
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
